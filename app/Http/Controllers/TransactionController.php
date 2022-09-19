@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTransactionRequest;
 use App\Models\Transaction;
+use DataTables;
 use Illuminate\Support\Facades\Http;
 
 class TransactionController extends Controller
@@ -15,9 +16,11 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return view('transactions.index', [
-            'transactions' => Transaction::all()
-        ]);
+        return Datatables::of(Transaction::all())
+            ->addColumn('action', function ($transaction) {
+                return '<a href="#" class="btn btn-danger btn-sm delete" id="' . $transaction->id . '">Delete</a>';
+            })
+            ->make(true);
     }
 
     /**
@@ -80,9 +83,6 @@ class TransactionController extends Controller
         $transaction->TipoTC = $response['WebServices_Transacciones']['transaccion']['TipoTC'];
         $transaction->monto = $response['WebServices_Transacciones']['transaccion']['dataVal']['monto'];
         $transaction->save();
-
-        dd($response->json());
-
         return redirect()->route('transactions.index');
     }
 
@@ -92,8 +92,9 @@ class TransactionController extends Controller
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaction $transaction)
+    public function eliminar($id)
     {
-        //
+        return "hola";
+        return redirect()->route('transactions.index');
     }
 }

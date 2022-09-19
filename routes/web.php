@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\TransactionController;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('transactions.index');
 });
 
-Route::resource('/transactions', TransactionController::class);
+Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+Route::get('/transaction/create', [TransactionController::class, 'create'])->name('transactions.create');
+Route::post('/transaction', [TransactionController::class, 'store'])->name('transactions.store');
+Route::delete('/transaction/{id}', [TransactionController::class, 'eliminar'])->name('transactions.destroy');
