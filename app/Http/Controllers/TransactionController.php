@@ -14,7 +14,8 @@ class TransactionController extends Controller
     {
         return Datatables::of(Transaction::all())
             ->addColumn('action', function ($transaction) {
-                return '<a href="#" class="btn btn-danger btn-sm delete" id="' . $transaction->id . '">Delete</a>';
+                return '<a href="#" class="btn btn-xs btn-primary show" id="' . $transaction->id . '">Mostrar</a>
+                        <a href="#" class="btn btn-xs btn-danger delete" id="' . $transaction->id . '">Eliminar</a>';
             })
             ->make(true);
     }
@@ -79,7 +80,13 @@ class TransactionController extends Controller
 
     public function show($id)
     {
-        return "hola";
-        return redirect()->route('transactions.index');
+        $transaction = Transaction::findOrFail($id);
+        return $transaction;
+    }
+
+    public function destroy($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+        $transaction->delete();
     }
 }

@@ -8,15 +8,17 @@
 @section('content')
 <div class="container">
     <h2>TRANSACCIONES</h2>
-    <table class="table transsaction">
+    <table class="table transaction">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Autorizado</th>
                 <th>Transaccion</th>
                 <th>Nombre</th>
-                <th>Apellidos</th>
+                <th>Tipo TC</th>
+                <th>Monto</th>
                 <th></th>
+
             </tr>
         </thead>
         <tbody>
@@ -24,18 +26,53 @@
         <tfoot>
             {{-- search for --}}
             <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>
-
+                    <input type="text" class="form-control filter-input" placeholder="Tipo" data-column="4" />
                 </td>
                 <td>
-                    <input type="text" class="form-control filter-input" placeholder="Autorizado" data-column="1" />
-                </td>
-                <td>
-                    <input type="text" class="form-control filter-input" placeholder="Transaccion" data-column="2" />
+                    <input type="text" class="form-control filter-input" placeholder="Monto" data-column="5" />
                 </td>
             </tr>
         </tfoot>
     </table>
+</div>
+
+<div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-labelledby="transactionModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="transactionModalLabel">Informacion de la transaccion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Id:</strong> <span id="id"></span></p>
+                        <p><strong>Autorizado:</strong> <span id="autorizado"></span></p>
+                        <p><strong>Transaccion:</strong> <span id="transaccion"></span></p>
+                        <p><strong>Nombre:</strong> <span id="nombre"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Tipo TC:</strong> <span id="tipo"></span></p>
+                        <p><strong>Monto:</strong> <span id="monto"></span></p>
+                        <p><strong>Fecha creacion:</strong> <span id="fecha"></span></p>
+                        <p><strong>Numero:</strong> <span id="numero"></span></p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
@@ -48,7 +85,7 @@
 
 <script type="text/javascript">
     $(function () {
-        var table = $('.transsaction').DataTable({
+        var table = $('.transaction').DataTable({
             processing: true,
             serverSide: true,
             language: {
@@ -68,18 +105,24 @@
                     name: 'transaccion'
                 },
                 {
-                    data: 'nombre',
-                    name: 'nombre'
+
+                    data: null,
+                    render: function (data, type, row) {
+                        return data.nombre + ' ' + data.apellidos;
+                    }
                 },
                 {
-                    data: 'apellidos',
-                    name: 'apellidos'
+                    data: 'TipoTC',
+                    name: 'TipoTC'
+                },
+                {
+                    data: 'monto',
+                    name: 'monto'
                 },
                 {
                     data: 'action',
                     name: 'delete',
-                    orderable: false,
-                    searchable: false
+                    orderable: false
                 },
             ]
         });
@@ -91,6 +134,26 @@
                 .draw();
         });
 
+        // show modal
+        $('body').on('click', '.show', function () {
+
+            $.get("{{ route('transactions.index') }}" + '/' + this.id, function (data) {
+                $('#transactionModal').modal('show');
+                $('#id').text(data.id);
+                $('#autorizado').text(data.autorizado);
+                $('#transaccion').text(data.transaccion);
+                $('#nombre').text(data.nombre + ' ' + data.apellidos);
+                $('#tipo').text(data.TipoTC);
+                $('#monto').text('$' + data.monto);
+                $('#fecha').text( new Date(data.created_at).toLocaleDateString());
+                $('#numero').text(data.numeroTarjeta);
+            })
+        });
+
+        //boton cerrar modal
+        $('#transactionModal').on('hidden.bs.modal', function () {
+            $(this).find('form')[0].reset();
+        });
 
     });
 </script>
