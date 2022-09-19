@@ -37,6 +37,7 @@ class TransactionTest extends TestCase
             'idPedido' => 'TEST_TX'
         ])->assertStatus(200);
 
-        //imprimir en consol
+        //imprimir en consola el resultado de la prueba
+        $response->dump();
     }
 }

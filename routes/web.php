@@ -19,7 +19,4 @@ Route::get('/', function () {
     return view('transactions.index');
 });
 
-Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
-Route::get('/transaction/create', [TransactionController::class, 'create'])->name('transactions.create');
-Route::post('/transaction', [TransactionController::class, 'store'])->name('transactions.store');
-Route::delete('/transaction/{id}', [TransactionController::class, 'eliminar'])->name('transactions.destroy');
+Route::resource('/transactions', TransactionController::class)->names('transactions');

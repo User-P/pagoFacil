@@ -9,11 +9,7 @@ use Illuminate\Support\Facades\Http;
 
 class TransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return Datatables::of(Transaction::all())
@@ -23,11 +19,6 @@ class TransactionController extends Controller
             ->make(true);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('transactions.create');
@@ -83,16 +74,10 @@ class TransactionController extends Controller
         $transaction->TipoTC = $response['WebServices_Transacciones']['transaccion']['TipoTC'];
         $transaction->monto = $response['WebServices_Transacciones']['transaccion']['dataVal']['monto'];
         $transaction->save();
-        return redirect()->route('transactions.index');
+        // return redirect()->route('transactions.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function eliminar($id)
+    public function show($id)
     {
         return "hola";
         return redirect()->route('transactions.index');
