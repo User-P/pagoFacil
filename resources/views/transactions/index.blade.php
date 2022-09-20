@@ -7,6 +7,13 @@
 
 @section('content')
 
+@if (session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
+
+
 <div class="container">
     <div class="row mt-5 ">
         {{-- mandar boton esquina superior derecha --}}
@@ -141,7 +148,6 @@
                 .draw();
         });
 
-        // show modal
         $('body').on('click', '.show', function () {
 
             $.get("{{ route('transactions.index') }}" + '/' + this.id, function (data) {
@@ -157,11 +163,9 @@
             })
         });
 
-        //boton cerrar modal
-        $('#transactionModal').on('hidden.bs.modal', function () {
-            $(this).find('form')[0].reset();
-        });
-
+        setTimeout(function () {
+            $('.alert').fadeOut('slow');
+        }, 3000);
     });
     </script>
     @endsection

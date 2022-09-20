@@ -15,7 +15,11 @@ class TransactionController extends Controller
         return Datatables::of(Transaction::all())
             ->addColumn('action', function ($transaction) {
                 return '<a href="#" class="btn btn-xs btn-primary show" id="' . $transaction->id . '">Mostrar</a>
-                        <a href="#" class="btn btn-xs btn-danger delete" id="' . $transaction->id . '">Eliminar</a>';
+                <form action="' . route('transactions.destroy', $transaction->id) . '" method="POST" style="display: inline-block;">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="' . csrf_token() . '">
+                    <button type="submit" class="btn btn-xs btn-danger delete" id="' . $transaction->id . '">Eliminar</button>
+                </form>';
             })
             ->make(true);
     }
@@ -75,18 +79,13 @@ class TransactionController extends Controller
         $transaction->TipoTC = $response['WebServices_Transacciones']['transaccion']['TipoTC'];
         $transaction->monto = $response['WebServices_Transacciones']['transaccion']['dataVal']['monto'];
         $transaction->save();
-        // return redirect()->route('transactions.index');
+
+        return redirect()->route('index')->with('success', 'Transacción realizada con éxito');
     }
 
     public function show($id)
     {
         $transaction = Transaction::findOrFail($id);
         return $transaction;
-    }
-
-    public function destroy($id)
-    {
-        $transaction = Transaction::findOrFail($id);
-        $transaction->delete();
     }
 }

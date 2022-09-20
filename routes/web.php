@@ -17,6 +17,6 @@ use App\Http\Controllers\TransactionController;
 
 Route::get('/', function () {
     return view('transactions.index');
-});
+})->name('index');
 
-Route::resource('/transactions', TransactionController::class)->names('transactions');
+Route::resource('/transactions', TransactionController::class)->names('transactions')->except(['update', 'edit', 'destroy']);
