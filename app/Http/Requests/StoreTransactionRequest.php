@@ -24,7 +24,23 @@ class StoreTransactionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nombre' => 'required',
+            'apellidos' => 'required',
+            'numeroTarjeta' => 'required | numeric | digits:16',
+            'cvt' => 'required | numeric',
+            'cp' => 'required | numeric | digits:5',
+            'mesExpiracion' => 'required | numeric | digits:2',
+            'anyoExpiracion' => 'required | numeric | digits:2',
+            'monto' => 'required | numeric',
+            'email' => 'required | email',
+            'telefono' => 'required | numeric',
+            'celular' => 'required | numeric',
+            'calleyNumero' => 'required',
+            'colonia' => 'required',
+            'municipio' => 'required',
+            'estado' => 'required',
+            'pais' => 'required',
+            'idPedido' => 'required',
         ];
     }
 }
