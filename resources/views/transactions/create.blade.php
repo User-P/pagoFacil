@@ -15,7 +15,7 @@
 
 @endif
 
-<div class="container ">
+<div class="container mt-5">
     <form action="{{ route('transactions.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">

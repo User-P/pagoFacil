@@ -11,6 +11,7 @@
     </head>
 
     <body>
+        <h1>Prueba Tecnica Pago Facil - Pedro Angel Gomez Dimas</h1>
         @yield('content')
     </body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
